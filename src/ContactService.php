@@ -97,10 +97,10 @@ class ContactService {
      * @throws invalidInputException en cas d'erreur de paramètre
      */
     public function createContact($nom, $prenom) {
-        if (empty($nom) && !is_string($nom)) {
+        if (empty($nom) || !is_string($nom)) {
             throw new invalidInputException('le nom  doit être renseigné');
         }
-        if (empty($prenom) && !is_string($prenom)) {
+        if (empty($prenom) || !is_string($prenom)) {
             throw new invalidInputException('le prenom doit être renseigné');
         }
         $stmt = $this->pdo->prepare('INSERT INTO contacts (nom, prenom) VALUES (:nom, :prenom)');
@@ -120,7 +120,7 @@ class ContactService {
      * @throws invalidInputException en cas d'erreur de paramètre
      */
     public function updateContact($id, $nom, $prenom) {
-        if (empty($nom) && !is_string($nom)) {
+        if (empty($nom) || !is_string($nom)) {
             throw new invalidInputException('le nom  doit être renseigné');
         }
 
@@ -130,7 +130,7 @@ class ContactService {
         if (!is_numeric($id) || $id < 0) {
             throw new invalidInputException("l'id doit être un entier non nul");
         }
-        if (empty($prenom) && !is_string($prenom)) {
+        if (empty($prenom) || !is_string($prenom)) {
             throw new invalidInputException('le prenom doit être renseigné');
         }
         $stmt = $this->pdo->prepare('UPDATE contacts SET nom=:nom, prenom=:prenom where id=:id');
