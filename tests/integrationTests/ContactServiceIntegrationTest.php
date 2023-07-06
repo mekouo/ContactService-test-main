@@ -29,74 +29,51 @@ final class ContactServiceIntegrationTest extends TestCase
     }
 
 
-     public function testDeleteAll()
-        {
-
-            static::assertTrue($this->contact->createContact('Mekouo', 'Riri'));
-            static::assertTrue($this->contact->createContact('Santa', 'Maria'));
-            $this->contactService->deleteAllContact();
-            static::assertSame(0, count($this->contact->getAllContacts()));
-        }
-
-        public function testCreationContact()
-        {
-            $this->Init('contactsTest.sqlite');
-            static::assertTrue($this->contact->createContact('testNom', 'testPrenom'));
-            $data = $this->contact->getAllContacts();
-            // echo "Creation contact :";
-            // echo var_dump($data);
-            static::assertSame('testNom', $data[0]['nom']);
-            static::assertSame('testPrenom', $data[0]['prenom']);
-            $this->id = $data[0]['id'];
-        }
-
-        public function testSearchContact()
-        {
-            $this->Init('contactsTest.sqlite');
-            $this->testCreationContact();
-            static::assertSame(1, count($this->contact->searchContact('testNom')));
-        }
-
-        public function testModifyContact()
-        {
-            $this->Init('contactsTest.sqlite');
-            $this->testCreationContact();
-            static::assertTrue($this->contact->updateContact($this->id, 'testUpNom', 'testUpNom'));
-            $data = $this->contact->getContact($this->id);
-            // echo "modify contact : ";
-            // echo var_dump($data);
-            static::assertSame('testUpNom', $data['nom']);
-            static::assertSame('testUpNom', $data['prenom']);
-        }
-
-        public function testDeleteContact()
-        {
-            $this->Init('contactsTest.sqlite');
-            $this->contact->deleteContact(0);
-            static::assertSame(0, count($this->contact->getAllContacts()));
-        }
 
 
-    // test de suppression de toute les données, nécessaire pour nettoyer la bdd de tests à la fin
     public function testDeleteAll()
-    {
-    }
+                  {
 
+                      static::assertTrue($this->contactService->createContact('Mekouo', 'Riri'));
+                      static::assertTrue($this->contactService->createContact('Santa', 'Maria'));
+                      $this->contactService->deleteAllContact();
+                      static::assertSame(0, count($this->contactService->getAllContacts()));
+                  }
 
     public function testCreationContact()
-    {
-    }
+                  {
+
+                      static::assertTrue($this->contactService->createContact('Santa', 'Maria'));
+                      $data = $this->contactService->getAllContacts();
+                      static::assertSame('Santa', $data[0]['nom']);
+                      static::assertSame('Maria', $data[0]['prenom']);
+
+                  }
 
     public function testSearchContact()
-    {
-    }
+                  {
+
+                      $this->testCreationContact();
+                      static::assertSame(1, count($this->contactService->searchContact('Santa')));
+                  }
 
     public function testModifyContact()
-    {
-    }
+                  {
+
+                      $this->testCreationContact();
+                      static::assertTrue($this->contactService->updateContact(1, 'Koko', 'Max'));
+                      $data = $this->contactService->getContact(1);
+                      static::assertSame('Koko', $data['nom']);
+                      static::assertSame('Koko', $data['nom']);
+                      static::assertSame('Max', $data['prenom']);
+                  }
 
     public function testDeleteContact()
-    {
-    }
+                  {
+
+                      $this->contactService->deleteContact(1);
+                      static::assertSame(0, count($this->contactService->getAllContacts()));
+                  }
+
 
 }
